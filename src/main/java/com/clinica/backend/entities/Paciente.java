@@ -2,6 +2,7 @@ package com.clinica.backend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -51,4 +52,7 @@ public class Paciente {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    @OneToMany(mappedBy = "paciente")
+    private List<Consulta> consultas;
 }

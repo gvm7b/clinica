@@ -23,4 +23,26 @@ public class Consulta {
 
     public UUID getId() {return id;}
 
+    public void setId(UUID id) {this.id = id;}
+
+    public String getCodpaciente() {return codpaciente;}
+
+    public void setCodpaciente(String codpaciente) {this.codpaciente = codpaciente;}
+
+    public String getCodmedico() {return codmedico;}
+
+    public void setCodmedico(String codmedico) {this.codmedico = codmedico;}
+
+    public Date getHorario() {return horario;}
+
+    public void setHorario(Date horario) {this.horario = horario;}
+
+    @ManyToOne
+    @JoinColumn(name = "medico_id")
+    private Medico medico;
+
+    @ManyToOne
+    @JoinColumn(name = "paciente_id")
+    private Paciente paciente;
+
 }
