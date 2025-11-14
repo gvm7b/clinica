@@ -7,18 +7,16 @@ import java.util.UUID;
 @Entity
 @Table(name = "pacientes")
 public class Paciente {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String nome;
     private String cpf;
     private String telefone;
 
-    public Paciente() {
-    }
+    public Paciente() {}
 
     public Paciente(String nome, String cpf, String telefone) {
+        this.id = UUID.randomUUID();
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;

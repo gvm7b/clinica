@@ -13,9 +13,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PacienteService {
-
     @Autowired
-    PacienteRepository pacienteRepository;
+    private PacienteRepository pacienteRepository;
 
     private PacienteDTO toDTO(Paciente paciente){
         return new PacienteDTO(paciente.getId(), paciente.getNome(), paciente.getCpf(), paciente.getTelefone());
@@ -25,24 +24,24 @@ public class PacienteService {
         return new Paciente(paciente.getNome(), paciente.getCpf(), paciente.getTelefone());
     }
 
-    private PacienteDTO getOne(UUID id) {
+    public PacienteDTO getOne(UUID id) {
         Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Paciente não encontrado."));
         return toDTO(paciente);
     }
 
-    private List<PacienteDTO> getAll() {
+    public List<PacienteDTO> getAll() {
         return pacienteRepository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
-    private PacienteDTO create(PacienteDTO dto) {
+    public PacienteDTO create(PacienteDTO dto) {
         Paciente paciente = toEntity(dto);
         return toDTO(pacienteRepository.save(paciente));
     }
 
-    private PacienteDTO update(UUID id, PacienteDTO dto) {
+    public PacienteDTO update(UUID id, PacienteDTO dto) {
         Paciente paciente = pacienteRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Paciente não encontrado."));
 
@@ -53,7 +52,7 @@ public class PacienteService {
         return toDTO(pacienteRepository.save(paciente));
     }
 
-    private PacienteDTO delete(UUID id) {
+    public PacienteDTO delete(UUID id) {
         Paciente paciente = pacienteRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Paciente não encontrado."));
 

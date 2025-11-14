@@ -8,8 +8,7 @@ public class PacienteDTO {
     private String cpf;
     private String telefone;
 
-    public PacienteDTO() {
-    }
+    public PacienteDTO() {}
 
     public PacienteDTO(UUID id, String nome, String cpf, String telefone) {
         this.id = id;
