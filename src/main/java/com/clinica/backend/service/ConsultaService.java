@@ -5,8 +5,13 @@ import com.clinica.backend.entities.Consulta;
 import com.clinica.backend.repository.ConsultaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,7 +37,7 @@ public class ConsultaService {
         return toDTO(c);
     }
 
-    private List<ConsultaDTO> getAll() {
+    public List<ConsultaDTO> getAll() {
         return consultaRepository.findAll()
                 .stream()
                 .map(this::toDTO)
@@ -40,13 +45,13 @@ public class ConsultaService {
     }
 
 
-    private ConsultaDTO create(ConsultaDTO dto) {
+    public ConsultaDTO create(ConsultaDTO dto) {
         Consulta consulta = toEntity(dto);
         return toDTO(consultaRepository.save(consulta));
     }
 
 
-    private ConsultaDTO update(UUID id, ConsultaDTO dto) {
+    public ConsultaDTO update(UUID id, ConsultaDTO dto) {
         Consulta consulta = consultaRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Consulta não encontrada."));
 
@@ -64,5 +69,18 @@ public class ConsultaService {
                 .orElseThrow(()-> new EntityNotFoundException("Consulta não encontrada."));
         consultaRepository.delete(consulta);
         return toDTO(consulta);
+    }
+    public Page<ConsultaDTO> getAll(int page, int size, String sort, String dir,
+                                    String codMedico, String codPaciente,
+                                    Date de, Date ate) {
+
+        Sort.Direction direction = "desc".equalsIgnoreCase(dir)
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
+        Page<Consulta> result = consultaRepository.findAll(pageable);
+
+        return result.map(this::toDTO);
     }
 }
