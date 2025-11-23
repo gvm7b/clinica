@@ -10,6 +10,8 @@ public class ConsultaDTO {
     private String codpaciente;
     private Date horario;
 
+    public ConsultaDTO() {
+    }
 
     public ConsultaDTO(UUID id, String codmedico, String codpaciente, Date horario) {
         this.id = id;
@@ -18,18 +20,35 @@ public class ConsultaDTO {
         this.horario = horario;
     }
 
-    public  UUID getId() {
+    public UUID getId() {
         return id;
     }
+
     public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getCodmedico() {return codmedico;}
-    public void setCodmedico(String codmedico) {this.codmedico = codmedico;}
-    public String getCodpaciente() {return codpaciente;}
-    public void setCodpaciente(String codpaciente) {this.codpaciente = codpaciente;}
-    public Date getHorario() {return horario;}
-    public void setHorario(Date horario) {this.horario = horario;}
+    public String getCodmedico() {
+        return codmedico;
+    }
 
+    public void setCodmedico(String codmedico) {
+        this.codmedico = codmedico;
+    }
+
+    public String getCodpaciente() {
+        return codpaciente;
+    }
+
+    public void setCodpaciente(String codpaciente) {
+        this.codpaciente = codpaciente;
+    }
+
+    public Date getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Date horario) {
+        this.horario = horario;
+    }
 }

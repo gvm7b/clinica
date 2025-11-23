@@ -2,7 +2,11 @@ package com.clinica.backend.service;
 
 import com.clinica.backend.dto.ConsultaDTO;
 import com.clinica.backend.entities.Consulta;
+import com.clinica.backend.entities.Medico;
+import com.clinica.backend.entities.Paciente;
 import com.clinica.backend.repository.ConsultaRepository;
+import com.clinica.backend.repository.MedicoRepository;
+import com.clinica.backend.repository.PacienteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -18,6 +22,12 @@ public class ConsultaService {
 
     @Autowired
     private ConsultaRepository consultaRepository;
+
+    @Autowired
+    private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private MedicoRepository medicoRepository;
 
     private ConsultaDTO toDTO(Consulta consulta) {
         return new ConsultaDTO(
@@ -42,12 +52,7 @@ public class ConsultaService {
         return toDTO(c);
     }
 
-    public List<ConsultaDTO> getAllSemPaginacao() {
-        return consultaRepository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
-    }
+
     public Page<ConsultaDTO> getAll(
             int page,
             int size,
@@ -76,7 +81,33 @@ public class ConsultaService {
     }
 
     public ConsultaDTO create(ConsultaDTO dto) {
+
+        UUID pacienteId;
+        UUID medicoId;
+
+        try {
+            pacienteId = UUID.fromString(dto.getCodpaciente());
+        } catch (IllegalArgumentException e) {
+            throw new EntityNotFoundException("Código de paciente inválido.");
+        }
+
+        try {
+            medicoId = UUID.fromString(dto.getCodmedico());
+        } catch (IllegalArgumentException e) {
+            throw new EntityNotFoundException("Código de médico inválido.");
+        }
+
+        Paciente paciente = pacienteRepository.findById(pacienteId)
+                .orElseThrow(() -> new EntityNotFoundException("Paciente não cadastrado."));
+
+        Medico medico = medicoRepository.findById(medicoId)
+                .orElseThrow(() -> new EntityNotFoundException("Médico não cadastrado."));
+
+        // monta entidade consulta
         Consulta consulta = toEntity(dto);
+        consulta.setPaciente(paciente);
+        consulta.setMedico(medico);
+
         return toDTO(consultaRepository.save(consulta));
     }
 
@@ -84,9 +115,32 @@ public class ConsultaService {
         Consulta consulta = consultaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada."));
 
+        UUID pacienteId;
+        UUID medicoId;
+
+        try {
+            pacienteId = UUID.fromString(dto.getCodpaciente());
+        } catch (IllegalArgumentException e) {
+            throw new EntityNotFoundException("Código de paciente inválido.");
+        }
+
+        try {
+            medicoId = UUID.fromString(dto.getCodmedico());
+        } catch (IllegalArgumentException e) {
+            throw new EntityNotFoundException("Código de médico inválido.");
+        }
+
+        Paciente paciente = pacienteRepository.findById(pacienteId)
+                .orElseThrow(() -> new EntityNotFoundException("Paciente não cadastrado."));
+
+        Medico medico = medicoRepository.findById(medicoId)
+                .orElseThrow(() -> new EntityNotFoundException("Médico não cadastrado."));
+
         consulta.setCodmedico(dto.getCodmedico());
         consulta.setCodpaciente(dto.getCodpaciente());
         consulta.setHorario(dto.getHorario());
+        consulta.setPaciente(paciente);
+        consulta.setMedico(medico);
 
         return toDTO(consultaRepository.save(consulta));
     }

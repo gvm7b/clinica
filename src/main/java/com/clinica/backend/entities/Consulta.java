@@ -24,11 +24,9 @@ public class Consulta {
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
-    // 🔹 Construtor vazio obrigatório para JPA
     public Consulta() {
     }
 
-    // 🔹 Construtor usado no Service/DTO
     public Consulta(String codpaciente, String codmedico, Date horario) {
         this.codpaciente = codpaciente;
         this.codmedico = codmedico;
