@@ -2,6 +2,7 @@ package com.clinica.backend.controllers;
 
 import com.clinica.backend.dto.PacienteDTO;
 import com.clinica.backend.service.PacienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<PacienteDTO> createPaciente(@RequestBody PacienteDTO pacienteDTO) {
+    public ResponseEntity<PacienteDTO> createPaciente(@Valid @RequestBody PacienteDTO pacienteDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(pacienteService.create(pacienteDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteDTO> updatePaciente(@PathVariable UUID id, @RequestBody PacienteDTO pacienteDTO) {
+    public ResponseEntity<PacienteDTO> updatePaciente(@PathVariable UUID id, @Valid @RequestBody PacienteDTO pacienteDTO) {
         return ResponseEntity.ok(pacienteService.update(id, pacienteDTO));
     }
 

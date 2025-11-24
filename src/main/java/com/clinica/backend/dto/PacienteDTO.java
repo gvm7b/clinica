@@ -1,11 +1,19 @@
 package com.clinica.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.UUID;
 
 public class PacienteDTO {
     private UUID id;
+
+    @NotBlank(message = "O nome do paciente é obrigatório")
     private String nome;
+
+    @NotBlank(message = "O CPF do paciente é obrigatório")
     private String cpf;
+
+    @NotBlank(message = "O telefone do paciente é obrigatório")
     private String telefone;
 
     public PacienteDTO() {}
