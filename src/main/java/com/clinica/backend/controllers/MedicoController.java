@@ -37,6 +37,7 @@ public class MedicoController {
         return ResponseEntity.ok(medicoService.update(id, medicoDTO));
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMedico(@PathVariable UUID id) {
         medicoService.delete(id);
